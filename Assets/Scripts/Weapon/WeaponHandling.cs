@@ -13,8 +13,8 @@ public class WeaponHandling : MonoBehaviour
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
-    private float nextTimeToFire;
-    private float nextTimeToThrowWeapon;
+    private float shootingCooldown;
+    private float dropWeaponCooldown;
     private float weaponThrowRate = 1f;
     private float impactDestroyTime = 5f;
     public bool HasWeapon {
@@ -26,13 +26,13 @@ public class WeaponHandling : MonoBehaviour
     private void Awake() {
     }
     private void Update() {
-        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= nextTimeToFire && HasWeapon){
-            nextTimeToFire = Time.time + 1f/Weapon.Data.fireRate;
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && HasWeapon){
+            shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
             Shoot();
         }
         
-        if (Input.GetKey(KeyCode.G) && Time.time >= nextTimeToThrowWeapon){
-            nextTimeToThrowWeapon = Time.time + 1f/weaponThrowRate;
+        if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown){
+            dropWeaponCooldown = Time.time + 1f/weaponThrowRate;
             DropWeapon();
         }
     }
