@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,10 @@ using UnityEngine;
 public class Weapon : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform shootingPoint;
+    [SerializeField] private Animator animator;
+    
+    // Animation triggers
+    const string shootTrigger = "Shoot";
     public Transform ShootingPoint
     {
         get{
@@ -23,6 +28,14 @@ public class Weapon : MonoBehaviour, IInteractable
         private set{
             weaponData = value;
         }
+    }
+
+    private void Awake() {
+        Player.Instance.WeaponHandling.OnShoot += OnPlayerShoot_Action;
+    }
+
+    private void OnPlayerShoot_Action(object sender, EventArgs e){
+//        animator.SetTrigger(shootTrigger);
     }
 
     // IINTERACTABLE INTERFACE

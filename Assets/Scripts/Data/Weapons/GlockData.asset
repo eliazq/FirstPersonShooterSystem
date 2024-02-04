@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3bb38a140c07a542a61bdd1f8219c56, type: 3}
   m_Name: GlockData
   m_EditorClassIdentifier: 
-  fireRate: 5
+  fireRate: 3
   shootingDistance: 100

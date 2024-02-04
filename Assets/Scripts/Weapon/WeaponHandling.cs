@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
@@ -13,6 +14,7 @@ public class WeaponHandling : MonoBehaviour
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
+    public event EventHandler OnShoot;
     private float shootingCooldown;
     private float dropWeaponCooldown;
     private float weaponThrowRate = 1f;
@@ -23,8 +25,6 @@ public class WeaponHandling : MonoBehaviour
         }
     }
 
-    private void Awake() {
-    }
     private void Update() {
         if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && HasWeapon){
             shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
@@ -59,6 +59,7 @@ public class WeaponHandling : MonoBehaviour
     }
 
     private void Shoot(){
+        OnShoot?.Invoke(this, EventArgs.Empty);            
         // Check if hits object
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Weapon.Data.shootingDistance))
         { 
