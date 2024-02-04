@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WeaponHandling : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class WeaponHandling : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && HasWeapon){
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && HasWeapon && Weapon.magSize > 0 && !Weapon.isReloading){
             shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
             Shoot();
         }
@@ -34,6 +35,10 @@ public class WeaponHandling : MonoBehaviour
         if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown){
             dropWeaponCooldown = Time.time + 1f/weaponThrowRate;
             DropWeapon();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.R)){
+            Weapon.Reload();
         }
     }
 
@@ -62,7 +67,7 @@ public class WeaponHandling : MonoBehaviour
         OnShoot?.Invoke(this, EventArgs.Empty);            
         // Check if hits object
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Weapon.Data.shootingDistance))
-        { 
+        {
             SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal), impactDestroyTime);
             ShootBulletTrail(Weapon.ShootingPoint.position, hit.point);
             if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
@@ -70,6 +75,10 @@ public class WeaponHandling : MonoBehaviour
                 rigidbody.AddForce(Vector3.up * ShotImpactForce);
                 rigidbody.AddForce(-hit.normal * ShotImpactForce);
             }
+        }
+        else {
+            // If didnt hit anything, still shoot the trail
+            ShootBulletTrail(Weapon.ShootingPoint.position, Camera.main.transform.forward * 100f);
         }
     }
 

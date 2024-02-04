@@ -10,6 +10,10 @@ public class Weapon : MonoBehaviour, IInteractable
     
     // Animation triggers
     const string shootTrigger = "Shoot";
+    const string ReloadTrigger = "Reload";
+    public int magSize{ get; private set; }
+
+    public bool isReloading {get; private set;}
     public Transform ShootingPoint
     {
         get{
@@ -34,11 +38,31 @@ public class Weapon : MonoBehaviour, IInteractable
         Player.Instance.WeaponHandling.OnShoot += OnPlayerShoot_Action;
     }
 
+    private void Update() {
+        if (isReloading && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Reload")){
+            // Just stopped reload animation
+            magSize = Data.maxMagSize;
+            isReloading = false;
+        }
+    }
+
     private void OnPlayerShoot_Action(object sender, EventArgs e){
         if (this == Player.Instance.WeaponHandling.Weapon)
         {
             animator.SetTrigger(shootTrigger);
+            magSize -= 1;
         }
+    }
+
+    public void Reload(){
+        animator.SetTrigger(ReloadTrigger);
+        StartCoroutine(SetReload());
+        
+    }
+
+    IEnumerator SetReload(){
+        yield return new WaitForEndOfFrame();
+        isReloading = true;
     }
 
     // IINTERACTABLE INTERFACE

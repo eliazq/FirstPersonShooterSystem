@@ -7,5 +7,6 @@ public class WeaponData : ScriptableObject
 {
     public float fireRate = 15f;
     public float  shootingDistance = 100f;
+    public int maxMagSize = 30;
 
 }
