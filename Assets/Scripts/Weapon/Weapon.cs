@@ -55,9 +55,11 @@ public class Weapon : MonoBehaviour, IInteractable
     }
 
     public void Reload(){
-        animator.SetTrigger(ReloadTrigger);
-        StartCoroutine(SetReload());
-        
+        if (!isReloading)
+        {
+            animator.SetTrigger(ReloadTrigger);
+            StartCoroutine(SetReload());
+        }
     }
 
     IEnumerator SetReload(){

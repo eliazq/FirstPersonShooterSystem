@@ -37,7 +37,7 @@ public class WeaponHandling : MonoBehaviour
             DropWeapon();
         }
         
-        if (Input.GetKeyDown(KeyCode.R)){
+        if (Input.GetKeyDown(KeyCode.R) && Weapon.magSize < Weapon.Data.maxMagSize){
             Weapon.Reload();
         }
     }
