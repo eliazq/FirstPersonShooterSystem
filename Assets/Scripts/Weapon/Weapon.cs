@@ -35,7 +35,10 @@ public class Weapon : MonoBehaviour, IInteractable
     }
 
     private void OnPlayerShoot_Action(object sender, EventArgs e){
-//        animator.SetTrigger(shootTrigger);
+        if (this == Player.Instance.WeaponHandling.Weapon)
+        {
+            animator.SetTrigger(shootTrigger);
+        }
     }
 
     // IINTERACTABLE INTERFACE
