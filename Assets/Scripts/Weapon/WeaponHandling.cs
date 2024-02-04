@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class WeaponHandling : MonoBehaviour
 {
+    // TODO! : Different Mags, for pistols, AR etc..
     public Weapon Weapon {get; private set;}
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private GameObject bulletTrailPrefab;
@@ -15,6 +16,7 @@ public class WeaponHandling : MonoBehaviour
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
+    [SerializeField] private int pistolMags = 3; // Change in future
     public event EventHandler OnShoot;
     private float shootingCooldown;
     private float dropWeaponCooldown;
@@ -37,7 +39,8 @@ public class WeaponHandling : MonoBehaviour
             DropWeapon();
         }
         
-        if (Input.GetKeyDown(KeyCode.R) && Weapon.magSize < Weapon.Data.maxMagSize){
+        if (Input.GetKeyDown(KeyCode.R) && pistolMags > 0 && Weapon.magSize < Weapon.Data.maxMagSize){
+            pistolMags -= 1;
             Weapon.Reload();
         }
     }
