@@ -22,7 +22,7 @@ public class WeaponHandling : MonoBehaviour
     private float shootingCooldown;
     private float dropWeaponCooldown;
     private float weaponThrowRate = 1f;
-    private float impactDestroyTime = 5f;
+    private float impactDestroyTime = 15f;
     public bool HasWeapon {
         get {
             return Weapon != null;
@@ -30,21 +30,42 @@ public class WeaponHandling : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && HasWeapon && Weapon.magSize > 0 && !Weapon.isReloading){
+
+        HandleWeapon();
+
+    }
+
+    private void HandleWeapon(){
+        if (HasWeapon)
+        {
+            CheckShooting();
+
+            CheckWeaponDrop();
+
+            CheckReload(); 
+        }
+    }
+
+    private void CheckShooting(){
+        // Check if player shoots and if its possible
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && Weapon.magSize > 0 && !Weapon.isReloading){
             shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
             Shoot();
         }
-        
+    }
+
+    private void CheckWeaponDrop(){
         if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown && !Weapon.isReloading){
             dropWeaponCooldown = Time.time + 1f/weaponThrowRate;
             DropWeapon();
         }
+    }
 
+    private void CheckReload(){
         if (Input.GetKeyDown(KeyCode.R))
         {
             ReloadWithRightMag();
         }
-
     }
 
     private void ReloadWithRightMag(){
@@ -70,17 +91,21 @@ public class WeaponHandling : MonoBehaviour
                 Weapon.AddComponent<Rigidbody>();
                 if (weapon.GetComponent<Rigidbody>() != null) Destroy(weapon.GetComponent<Rigidbody>());
                 Weapon = weapon;
-                Weapon.transform.position = handTransform.position;
+
+                StartCoroutine(MoveWeaponDynamically(5f));
+                StartCoroutine(RotateWeaponDynamically(5f));
+
                 Weapon.transform.parent = handTransform;
-                Weapon.transform.rotation = handTransform.rotation;
             }
         }
         else {
             if (weapon.GetComponent<Rigidbody>() != null) Destroy(weapon.GetComponent<Rigidbody>());
             Weapon = weapon;
-            Weapon.transform.position = handTransform.position;
+
+            StartCoroutine(MoveWeaponDynamically(5f));
+            StartCoroutine(RotateWeaponDynamically(5f));
+
             Weapon.transform.parent = handTransform;
-            Weapon.transform.rotation = handTransform.rotation;
         }
         
     }
@@ -109,7 +134,8 @@ public class WeaponHandling : MonoBehaviour
         }
         else {
             // If didnt hit anything, still shoot the trail
-            ShootBulletTrail(Weapon.ShootingPoint.position, Camera.main.transform.forward * 100f);
+            Vector3 targetPos = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+            ShootBulletTrail(Weapon.ShootingPoint.position, targetPos);
         }
     }
 
@@ -152,5 +178,40 @@ private IEnumerator MoveTrailCoroutine(GameObject trail, Vector3 initialPos, Vec
     trail.transform.position = targetPos;
     Destroy(trail);
 }
+
+private IEnumerator MoveWeaponDynamically(float smoothness){
+    float elapsedTime = 0f;
+
+    while (elapsedTime < smoothness){
+        Vector3 targetPosition = handTransform.position;
+        Weapon.transform.position = Vector3.Lerp(Weapon.transform.position, targetPosition, elapsedTime / smoothness);
+        float positionThreshold = 0.01f;
+        float distance = Vector3.Distance(Weapon.transform.position, targetPosition);
+        if (distance < positionThreshold){
+            Weapon.transform.position = targetPosition;
+            break;
+        }
+        elapsedTime += Time.deltaTime;
+        yield return null;
+    }
+}
+
+private IEnumerator RotateWeaponDynamically(float smoothness){
+    float elapsedTime = 0f;
+
+    while (elapsedTime < smoothness){
+        Quaternion targetRotation = handTransform.rotation;
+        Weapon.transform.rotation = Quaternion.Slerp(Weapon.transform.rotation, targetRotation, elapsedTime / smoothness);
+        float rotationThreshold = 0.01f;
+        float angle = Quaternion.Angle(Weapon.transform.rotation, targetRotation);
+        if (angle < rotationThreshold){
+            Weapon.transform.rotation = targetRotation;
+            break;
+        }
+        elapsedTime += Time.deltaTime;
+        yield return null;
+    }
+}
+
 
 }
