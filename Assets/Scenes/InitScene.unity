@@ -309,6 +309,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3812957558609848511, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
+      propertyPath: trailTime
+      value: 0.075
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812957558609848511, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: pistolMags
       value: 10
       objectReference: {fileID: 0}
@@ -544,6 +548,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2480531358690863452, guid: b023380db0231c24db214dfd45fe2ac7, type: 3}
+      propertyPath: m_UpdateMethod
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2480531358690863452, guid: b023380db0231c24db214dfd45fe2ac7, type: 3}
+      propertyPath: m_DefaultBlend.m_Time
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3040250609605129931, guid: b023380db0231c24db214dfd45fe2ac7, type: 3}
       propertyPath: m_Name
       value: CameraSet

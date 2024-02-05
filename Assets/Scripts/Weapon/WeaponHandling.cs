@@ -98,7 +98,7 @@ public class WeaponHandling : MonoBehaviour
         // Check if hits object
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Weapon.Data.shootingDistance))
         {
-            SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal), impactDestroyTime);
+            SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal));
             ShootBulletTrail(Weapon.ShootingPoint.position, hit.point);
             if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
             {
@@ -113,9 +113,9 @@ public class WeaponHandling : MonoBehaviour
         }
     }
 
-    private void SpawnBulletImpact(Vector3 position, Quaternion rotation, float timeToDestroy){
+    private void SpawnBulletImpact(Vector3 position, Quaternion rotation){
         GameObject impact = Instantiate(impactEffect, position, rotation);
-        Destroy(impact, timeToDestroy);
+        Destroy(impact, impactDestroyTime);
     }
 
     private void ShootBulletTrail(Vector3 startPosition, Vector3 endPosition){
@@ -150,6 +150,7 @@ private IEnumerator MoveTrailCoroutine(GameObject trail, Vector3 initialPos, Vec
 
     // Ensure the trail reaches the exact target position
     trail.transform.position = targetPos;
+    Destroy(trail);
 }
 
 }
