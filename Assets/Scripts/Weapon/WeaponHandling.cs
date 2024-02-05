@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 public class WeaponHandling : MonoBehaviour
 {
-    // TODO! : Different Mags, for pistols, AR etc..
+    // TODO! : Different Mags, for pistols, AR etc.. and NaughtyAttribute organization
     public Weapon Weapon {get; private set;}
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private GameObject bulletTrailPrefab;
@@ -17,6 +17,7 @@ public class WeaponHandling : MonoBehaviour
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
     [SerializeField] private int pistolMags = 3; // Change in future
+    [SerializeField] private int subMachineMags = 3;
     public event EventHandler OnShoot;
     private float shootingCooldown;
     private float dropWeaponCooldown;
@@ -34,27 +35,53 @@ public class WeaponHandling : MonoBehaviour
             Shoot();
         }
         
-        if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown){
+        if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown && !Weapon.isReloading){
             dropWeaponCooldown = Time.time + 1f/weaponThrowRate;
             DropWeapon();
         }
-        
-        if (Input.GetKeyDown(KeyCode.R) && pistolMags > 0 && Weapon.magSize < Weapon.Data.maxMagSize){
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            ReloadWithRightMag();
+        }
+
+    }
+
+    private void ReloadWithRightMag(){
+        if (Weapon.Data.weaponType == WeaponData.WeaponType.Pistol)
+        {
+            if (pistolMags > 0 && Weapon.magSize < Weapon.Data.maxMagSize){
             pistolMags -= 1;
             Weapon.Reload();
+            }
+        }
+        else if (Weapon.Data.weaponType == WeaponData.WeaponType.SubMachine){
+            if (subMachineMags > 0 && Weapon.magSize < Weapon.Data.maxMagSize){
+            subMachineMags -= 1;
+            Weapon.Reload();
+            }
         }
     }
 
     public void SetWeapon(Weapon weapon){
         if (HasWeapon){
-            Weapon.transform.parent = null;
-            Weapon.AddComponent<Rigidbody>();
+            if (!Weapon.isReloading) {
+                Weapon.transform.parent = null;
+                Weapon.AddComponent<Rigidbody>();
+                if (weapon.GetComponent<Rigidbody>() != null) Destroy(weapon.GetComponent<Rigidbody>());
+                Weapon = weapon;
+                Weapon.transform.position = handTransform.position;
+                Weapon.transform.parent = handTransform;
+                Weapon.transform.rotation = handTransform.rotation;
+            }
         }
-        if (weapon.GetComponent<Rigidbody>() != null) Destroy(weapon.GetComponent<Rigidbody>());
-        Weapon = weapon;
-        Weapon.transform.position = handTransform.position;
-        Weapon.transform.parent = handTransform;
-        Weapon.transform.rotation = handTransform.rotation;
+        else {
+            if (weapon.GetComponent<Rigidbody>() != null) Destroy(weapon.GetComponent<Rigidbody>());
+            Weapon = weapon;
+            Weapon.transform.position = handTransform.position;
+            Weapon.transform.parent = handTransform;
+            Weapon.transform.rotation = handTransform.rotation;
+        }
         
     }
 
@@ -75,8 +102,9 @@ public class WeaponHandling : MonoBehaviour
             ShootBulletTrail(Weapon.ShootingPoint.position, hit.point);
             if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
             {
-                rigidbody.AddForce(Vector3.up * ShotImpactForce);
                 rigidbody.AddForce(-hit.normal * ShotImpactForce);
+                Vector3 ForceDir = (hit.transform.position - Player.Instance.transform.position).normalized;
+                rigidbody.AddForce(ForceDir * ShotImpactForce);
             }
         }
         else {
