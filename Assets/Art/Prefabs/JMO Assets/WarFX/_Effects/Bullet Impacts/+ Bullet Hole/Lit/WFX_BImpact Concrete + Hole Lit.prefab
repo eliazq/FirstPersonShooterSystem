@@ -4807,7 +4807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395f3a2ded34a634fbd77ee83f9939a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 10
+  lifetime: 60
   fadeoutpercent: 15
   frames: {x: 2, y: 2}
   randomRotation: 1

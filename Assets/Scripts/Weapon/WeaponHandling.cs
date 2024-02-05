@@ -22,7 +22,8 @@ public class WeaponHandling : MonoBehaviour
     private float shootingCooldown;
     private float dropWeaponCooldown;
     private float weaponThrowRate = 1f;
-    private float impactDestroyTime = 15f;
+    private float impactDestroyTime = 60f;
+    [SerializeField] private string groundLayerName = "Ground";
     public bool HasWeapon {
         get {
             return Weapon != null;
@@ -123,7 +124,10 @@ public class WeaponHandling : MonoBehaviour
         // Check if hits object
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Weapon.Data.shootingDistance))
         {
-            SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal));
+            if (hit.collider.gameObject.layer.Equals(LayerMask.NameToLayer(groundLayerName)))
+            {
+                SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal));
+            }
             ShootBulletTrail(Weapon.ShootingPoint.position, hit.point);
             if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
             {

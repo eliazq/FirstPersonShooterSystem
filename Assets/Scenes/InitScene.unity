@@ -319,6 +319,10 @@ PrefabInstance:
       propertyPath: subMachineMags
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3812957558609848511, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 7049635777751195015, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: MoveSpeed
       value: 3
