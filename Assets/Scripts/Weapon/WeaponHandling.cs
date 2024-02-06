@@ -16,8 +16,8 @@ public class WeaponHandling : MonoBehaviour
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
-    [SerializeField] private int pistolMags = 3; // Change in future
-    [SerializeField] private int subMachineMags = 3;
+    public int pistolMags {get; set;} = 0;
+    public int subMachineMags {get; set;} = 0;
     public event EventHandler OnShoot;
     private float shootingCooldown;
     private float dropWeaponCooldown;
