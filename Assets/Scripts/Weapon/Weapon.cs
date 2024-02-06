@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour, IInteractable
     // Animation triggers
     const string shootTrigger = "Shoot";
     const string ReloadTrigger = "Reload";
+    const string OutOfAmmoBool = "OutOfAmmo";
     public int magSize{ get; private set; }
 
     public bool isReloading {get; private set;}
@@ -34,6 +35,13 @@ public class Weapon : MonoBehaviour, IInteractable
         }
     }
 
+    public bool IsPlayerWeapon {
+        get{
+            if (this == Player.Instance.WeaponHandling.Weapon) return true;
+            return false;
+        }
+    }
+
     private void Awake() {
         Player.Instance.WeaponHandling.OnShoot += OnPlayerShoot_Action;
     }
@@ -44,10 +52,17 @@ public class Weapon : MonoBehaviour, IInteractable
             magSize = Data.maxMagSize;
             isReloading = false;
         }
+
+        if (IsPlayerWeapon && !isReloading){
+            if (magSize <= 0)
+                animator.SetBool(OutOfAmmoBool, true);
+            else animator.SetBool(OutOfAmmoBool, false);
+        }
+        
     }
 
     private void OnPlayerShoot_Action(object sender, EventArgs e){
-        if (this == Player.Instance.WeaponHandling.Weapon)
+        if (IsPlayerWeapon)
         {
             animator.SetTrigger(shootTrigger);
             magSize -= 1;
