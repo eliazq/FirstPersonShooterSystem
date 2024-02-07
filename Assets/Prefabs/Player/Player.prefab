@@ -228,7 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 4
   SprintSpeed: 6
-  RotationSpeed: 0.15
+  RotationSpeed: 0.1
   SpeedChangeRate: 10
   JumpHeight: 1.2
   Gravity: -15
@@ -395,6 +395,7 @@ MonoBehaviour:
   handTransform: {fileID: 6311753273836996678}
   WeaponThrowForce: 300
   ShotImpactForce: 200
+  groundLayerName: Ground
 --- !u!114 &1695281503039942087
 MonoBehaviour:
   m_ObjectHideFlags: 0
