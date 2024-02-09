@@ -12,7 +12,6 @@ public class WeaponHandling : MonoBehaviour
     public Weapon Weapon {get; private set;}
     [SerializeField] private GameObject impactEffect;
     [SerializeField] private GameObject bulletTrailPrefab;
-    [SerializeField] private float trailTime = 30f;
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
@@ -22,8 +21,6 @@ public class WeaponHandling : MonoBehaviour
     private float shootingCooldown;
     private float dropWeaponCooldown;
     private float weaponThrowRate = 1f;
-    private float impactDestroyTime = 60f;
-    [SerializeField] private string groundLayerName = "Ground";
     public bool HasWeapon {
         get {
             return Weapon != null;
@@ -51,7 +48,15 @@ public class WeaponHandling : MonoBehaviour
         // Check if player shoots and if its possible
         if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && Weapon.magSize > 0 && !Weapon.isReloading){
             shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
-            Shoot(Camera.main.transform.position, Camera.main.transform.forward, Player.Instance.transform.position);
+            OnShoot?.Invoke(this, EventArgs.Empty);
+
+            if (WeaponSystem.Instance.Shoot(Camera.main.transform.position, Camera.main.transform.forward,
+                Player.Instance.transform.position, Weapon.ShootingPoint.position, Weapon.Data.shootingDistance, ShotImpactForce, out RaycastHit hit))
+                {
+                    // TODO: Damage Logic Here, IDamageable.Damage
+                    
+                }
+            
         }
     }
 
@@ -115,70 +120,6 @@ public class WeaponHandling : MonoBehaviour
         WeaponSystem.DropWeapon(Weapon, Camera.main.transform.forward, WeaponThrowForce);
         Weapon = null;
     }
-
-    private void Shoot(Vector3 shootingPosition, Vector3 shootDirection, Vector3 ShooterPosition){
-        OnShoot?.Invoke(this, EventArgs.Empty);            
-        // Check if hits object
-        if (Physics.Raycast(shootingPosition, shootDirection, out RaycastHit hit, Weapon.Data.shootingDistance))
-        {
-            if (hit.collider.gameObject.layer.Equals(LayerMask.NameToLayer(groundLayerName)))
-            {
-                SpawnBulletImpact(hit.point, Quaternion.LookRotation(hit.normal));
-            }
-            ShootBulletTrail(Weapon.ShootingPoint.position, hit.point);
-            if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
-            {
-                rigidbody.AddForce(-hit.normal * ShotImpactForce);
-                Vector3 ForceDir = (hit.transform.position - ShooterPosition).normalized;
-                rigidbody.AddForce(ForceDir * ShotImpactForce);
-            }
-        }
-        else {
-            // If didnt hit anything, still shoot the trail
-            Vector3 targetPos = shootingPosition + shootDirection * 100f;
-            ShootBulletTrail(Weapon.ShootingPoint.position, targetPos);
-        }
-    }
-
-    private void SpawnBulletImpact(Vector3 position, Quaternion rotation){
-        GameObject impact = Instantiate(impactEffect, position, rotation);
-        Destroy(impact, impactDestroyTime);
-    }
-
-    private void ShootBulletTrail(Vector3 startPosition, Vector3 endPosition){
-        GameObject trail = Instantiate(bulletTrailPrefab, startPosition, Quaternion.identity);
-        MoveTrailSmooth(trail, endPosition);
-    }
-
-    private void MoveTrailSmooth(GameObject trail, Vector3 targetPos) {
-    // You can adjust the duration based on how fast you want the trail to move
-    float duration = trailTime;
-
-    // Store the initial position of the trail
-    Vector3 initialPos = trail.transform.position;
-
-    // Use a coroutine to smoothly move the trail over time
-    StartCoroutine(MoveTrailCoroutine(trail, initialPos, targetPos, duration));
-}
-
-private IEnumerator MoveTrailCoroutine(GameObject trail, Vector3 initialPos, Vector3 targetPos, float duration) {
-    float elapsed = 0f;
-
-    while (elapsed < duration) {
-        // Interpolate the position between initialPos and targetPos over time
-        trail.transform.position = Vector3.Lerp(initialPos, targetPos, elapsed / duration);
-
-        // Increment the elapsed time
-        elapsed += Time.deltaTime;
-
-        // Wait for the next frame
-        yield return null;
-    }
-
-    // Ensure the trail reaches the exact target position
-    trail.transform.position = targetPos;
-    Destroy(trail);
-}
 
 private IEnumerator MoveWeaponDynamically(float smoothness){
     float elapsedTime = 0f;
