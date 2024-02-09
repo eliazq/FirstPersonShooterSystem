@@ -51,14 +51,14 @@ public class WeaponHandling : MonoBehaviour
         // Check if player shoots and if its possible
         if (Input.GetKey(KeyCode.Mouse0) && Time.time >= shootingCooldown && Weapon.magSize > 0 && !Weapon.isReloading){
             shootingCooldown = Time.time + 1f/Weapon.Data.fireRate;
-            Shoot();
+            Shoot(Camera.main.transform.position, Camera.main.transform.forward, Player.Instance.transform.position);
         }
     }
 
     private void CheckWeaponDrop(){
         if (Input.GetKey(KeyCode.G) && Time.time >= dropWeaponCooldown && !Weapon.isReloading){
             dropWeaponCooldown = Time.time + 1f/weaponThrowRate;
-            DropWeapon();
+            DropWeapon(); 
         }
     }
 
@@ -111,18 +111,15 @@ public class WeaponHandling : MonoBehaviour
         
     }
 
-    public void DropWeapon(){
-        if (Weapon != null){
-            Weapon.transform.parent = null;
-            Weapon.AddComponent<Rigidbody>().AddForce(Camera.main.transform.forward * WeaponThrowForce);
-            Weapon = null;
-        }
+    private void DropWeapon(){
+        WeaponSystem.DropWeapon(Weapon, Camera.main.transform.forward, WeaponThrowForce);
+        Weapon = null;
     }
 
-    private void Shoot(){
+    private void Shoot(Vector3 shootingPosition, Vector3 shootDirection, Vector3 ShooterPosition){
         OnShoot?.Invoke(this, EventArgs.Empty);            
         // Check if hits object
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, Weapon.Data.shootingDistance))
+        if (Physics.Raycast(shootingPosition, shootDirection, out RaycastHit hit, Weapon.Data.shootingDistance))
         {
             if (hit.collider.gameObject.layer.Equals(LayerMask.NameToLayer(groundLayerName)))
             {
@@ -132,13 +129,13 @@ public class WeaponHandling : MonoBehaviour
             if (hit.transform.TryGetComponent(out Rigidbody rigidbody))
             {
                 rigidbody.AddForce(-hit.normal * ShotImpactForce);
-                Vector3 ForceDir = (hit.transform.position - Player.Instance.transform.position).normalized;
+                Vector3 ForceDir = (hit.transform.position - ShooterPosition).normalized;
                 rigidbody.AddForce(ForceDir * ShotImpactForce);
             }
         }
         else {
             // If didnt hit anything, still shoot the trail
-            Vector3 targetPos = Camera.main.transform.position + Camera.main.transform.forward * 100f;
+            Vector3 targetPos = shootingPosition + shootDirection * 100f;
             ShootBulletTrail(Weapon.ShootingPoint.position, targetPos);
         }
     }
