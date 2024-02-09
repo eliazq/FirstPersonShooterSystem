@@ -8,10 +8,7 @@ using UnityEngine.InputSystem;
 
 public class WeaponHandling : MonoBehaviour
 {
-    // TODO! : Different Mags, for pistols, AR etc.. and NaughtyAttribute organization
     public Weapon Weapon {get; private set;}
-    [SerializeField] private GameObject impactEffect;
-    [SerializeField] private GameObject bulletTrailPrefab;
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
@@ -54,7 +51,7 @@ public class WeaponHandling : MonoBehaviour
                 Player.Instance.transform.position, Weapon.ShootingPoint.position, Weapon.Data.shootingDistance, ShotImpactForce, out RaycastHit hit))
                 {
                     // TODO: Damage Logic Here, IDamageable.Damage
-                    
+                     
                 }
             
         }

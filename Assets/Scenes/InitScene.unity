@@ -491,11 +491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6494f7652fac144ba330febe4966b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundLayerName: 
+  groundLayerName: Ground
   trailPrefab: {fileID: 1076372297178575714, guid: fad36a6bf47afa54a8771968845f4566, type: 3}
   impactEffect: {fileID: 100006, guid: 9e95c7b2183a4f345aaf86846f8f1918, type: 3}
-  impactDestroyTime: 0
-  trailTime: 0
+  impactDestroyTime: 50
+  trailTime: 0.15
   impactForce: 250
 --- !u!4 &2020865604
 Transform:
