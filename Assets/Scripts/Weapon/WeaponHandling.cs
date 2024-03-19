@@ -48,7 +48,7 @@ public class WeaponHandling : MonoBehaviour
             OnShoot?.Invoke(this, EventArgs.Empty);
 
             if (WeaponSystem.Instance.Shoot(Camera.main.transform.position, Camera.main.transform.forward,
-                Player.Instance.transform.position, Weapon.ShootingPoint.position, Weapon.Data.shootingDistance, ShotImpactForce, out RaycastHit hit))
+                transform.position, Weapon.ShootingPoint.position, Weapon.Data.shootingDistance, ShotImpactForce, out RaycastHit hit))
                 {
                     // TODO: Damage Logic Here, IDamageable.Damage
                      

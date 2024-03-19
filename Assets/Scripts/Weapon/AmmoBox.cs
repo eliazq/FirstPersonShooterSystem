@@ -20,10 +20,10 @@ public class AmmoBox : MonoBehaviour, IInteractable
     {
         switch(ammoType){
             case WeaponData.WeaponType.Pistol:
-                Player.Instance.WeaponHandling.pistolMags += 1;
+                interactorTransform.GetComponent<WeaponHandling>().pistolMags += 1;
                 break;
             case WeaponData.WeaponType.SubMachine:
-                Player.Instance.WeaponHandling.subMachineMags += 1;
+                interactorTransform.GetComponent<WeaponHandling>().subMachineMags += 1;
                 break;
         }
         Destroy(gameObject);

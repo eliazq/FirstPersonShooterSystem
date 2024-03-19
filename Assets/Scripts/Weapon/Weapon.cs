@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private Animator animator;
+    private WeaponHandling weaponHandling;
     
     // Animation triggers
     const string shootTrigger = "Shoot";
@@ -37,16 +38,14 @@ public class Weapon : MonoBehaviour, IInteractable
 
     public bool IsPlayerWeapon {
         get{
-            if (this == Player.Instance.WeaponHandling.Weapon) return true;
+            if (this == weaponHandling.Weapon) return true;
             return false;
         }
     }
 
-    private void Awake() {
-        Player.Instance.WeaponHandling.OnShoot += OnPlayerShoot_Action;
-    }
-
     private void Update() {
+        if (weaponHandling == null) return;
+
         if (isReloading && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Reload")){
             // Just stopped reload animation
             magSize = Data.maxMagSize;
@@ -84,7 +83,14 @@ public class Weapon : MonoBehaviour, IInteractable
 
     // IINTERACTABLE INTERFACE
     public void Interact(Transform interactorTransform){
-        Player.Instance.WeaponHandling.SetWeapon(this);
+
+        if (weaponHandling == null)
+        {
+            weaponHandling = interactorTransform.GetComponent<WeaponHandling>();
+            weaponHandling.OnShoot += OnPlayerShoot_Action;
+        }
+
+        weaponHandling.SetWeapon(this);
     }
     public string GetInteractText(){
         return "PickUpWeapon";
