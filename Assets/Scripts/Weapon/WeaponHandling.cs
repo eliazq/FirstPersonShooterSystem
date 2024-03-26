@@ -4,14 +4,22 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class WeaponHandling : MonoBehaviour
 {
     public Weapon Weapon {get; private set;}
+    [Header("Settings")]
     [SerializeField] private Transform handTransform;
     [SerializeField] private float WeaponThrowForce = 300f;
     [SerializeField] private float ShotImpactForce = 200f;
+
+    [Header("Hand IK")]
+    [SerializeField] private TwoBoneIKConstraint twoBoneIKConstraint;
+    [SerializeField] private RigBuilder rigBuilder;
+    [SerializeField] private Transform emptyHandTransform;
+
     public int pistolMags {get; set;} = 0;
     public int subMachineMags {get; set;} = 0;
     public event EventHandler OnShoot;
@@ -110,47 +118,56 @@ public class WeaponHandling : MonoBehaviour
 
             Weapon.transform.parent = handTransform;
         }
+
+        SetHandIKTarget(Weapon.handlerGrip);
         
     }
 
     private void DropWeapon(){
         WeaponSystem.DropWeapon(Weapon, Camera.main.transform.forward, WeaponThrowForce);
         Weapon = null;
+        SetHandIKTarget(emptyHandTransform);
     }
 
-private IEnumerator MoveWeaponDynamically(float smoothness){
-    float elapsedTime = 0f;
+    private void SetHandIKTarget(Transform target)
+    {
+        twoBoneIKConstraint.data.target = target;
+        rigBuilder.Build();
+    }
 
-    while (elapsedTime < smoothness){
-        Vector3 targetPosition = handTransform.position;
-        Weapon.transform.position = Vector3.Lerp(Weapon.transform.position, targetPosition, elapsedTime / smoothness);
-        float positionThreshold = 0.01f;
-        float distance = Vector3.Distance(Weapon.transform.position, targetPosition);
-        if (distance < positionThreshold){
-            Weapon.transform.position = targetPosition;
-            break;
+    private IEnumerator MoveWeaponDynamically(float smoothness){
+        float elapsedTime = 0f;
+
+        while (elapsedTime < smoothness){
+            Vector3 targetPosition = handTransform.position;
+            Weapon.transform.position = Vector3.Lerp(Weapon.transform.position, targetPosition, elapsedTime / smoothness);
+            float positionThreshold = 0.01f;
+            float distance = Vector3.Distance(Weapon.transform.position, targetPosition);
+            if (distance < positionThreshold){
+                Weapon.transform.position = targetPosition;
+                break;
+            }
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
-        elapsedTime += Time.deltaTime;
-        yield return null;
     }
-}
 
-private IEnumerator RotateWeaponDynamically(float smoothness){
-    float elapsedTime = 0f;
+    private IEnumerator RotateWeaponDynamically(float smoothness){
+        float elapsedTime = 0f;
 
-    while (elapsedTime < smoothness){
-        Quaternion targetRotation = handTransform.rotation;
-        Weapon.transform.rotation = Quaternion.Slerp(Weapon.transform.rotation, targetRotation, elapsedTime / smoothness);
-        float rotationThreshold = 0.01f;
-        float angle = Quaternion.Angle(Weapon.transform.rotation, targetRotation);
-        if (angle < rotationThreshold){
-            Weapon.transform.rotation = targetRotation;
-            break;
+        while (elapsedTime < smoothness){
+            Quaternion targetRotation = handTransform.rotation;
+            Weapon.transform.rotation = Quaternion.Slerp(Weapon.transform.rotation, targetRotation, elapsedTime / smoothness);
+            float rotationThreshold = 0.01f;
+            float angle = Quaternion.Angle(Weapon.transform.rotation, targetRotation);
+            if (angle < rotationThreshold){
+                Weapon.transform.rotation = targetRotation;
+                break;
+            }
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
-        elapsedTime += Time.deltaTime;
-        yield return null;
     }
-}
 
 
 }

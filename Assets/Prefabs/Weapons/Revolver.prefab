@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2126170531774613393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4379808951190384975}
+  m_Layer: 0
+  m_Name: Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4379808951190384975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2126170531774613393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.5549561, y: -0.8298884, z: -0.050042354, w: -0.028368589}
+  m_LocalPosition: {x: 0.0571, y: 0.0244, z: 0.0066}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7949928385991262658}
+  m_LocalEulerAnglesHint: {x: -6.577, y: -179.512, z: -67.57}
 --- !u!1 &6454832564404602414
 GameObject:
   m_ObjectHideFlags: 0
@@ -51,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingPoint: {fileID: 8645966171654653653}
   animator: {fileID: 6146549572881241705}
+  handlerTransform: {fileID: 4379808951190384975}
   weaponData: {fileID: 11400000, guid: f8ea5312fb1e7c9459fc63095da94b3b, type: 2}
 --- !u!65 &2329307510947980944
 BoxCollider:
@@ -198,7 +230,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5552368104232246997, guid: b6196d35d8aa42a42814f631d0fa6c07, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4379808951190384975}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5752744763303893697, guid: b6196d35d8aa42a42814f631d0fa6c07, type: 3}
       insertIndex: -1
@@ -235,6 +270,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &7949928385991262658 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5552368104232246997, guid: b6196d35d8aa42a42814f631d0fa6c07, type: 3}
+  m_PrefabInstance: {fileID: 2548519384330346263}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8645966171654653653 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6098591379941759426, guid: b6196d35d8aa42a42814f631d0fa6c07, type: 3}

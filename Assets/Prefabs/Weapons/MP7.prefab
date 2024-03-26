@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootingPoint: {fileID: 3605267606820579127}
   animator: {fileID: 7310021018742163777}
+  handlerTransform: {fileID: 3522211651541592346}
   weaponData: {fileID: 11400000, guid: 1789c96e972f6034fad8ed35deb96d55, type: 2}
 --- !u!65 &2819678232906572196
 BoxCollider:
@@ -177,6 +178,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 387985620286917978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9062051028529539698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3522211651541592346}
+  m_Layer: 0
+  m_Name: Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3522211651541592346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9062051028529539698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.45719537, y: -0.64432055, z: 0.43602225, w: -0.4309385}
+  m_LocalPosition: {x: -0.0044, y: -0.0402, z: 0.0374}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 387985620286917978}
+  m_LocalEulerAnglesHint: {x: 9.662, y: -255.40799, z: -78.193}
 --- !u!1001 &798472734753351537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -243,6 +275,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1042258294081038891, guid: 34b6ac66c1222a24d818c2458ae42201, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3605267606820579127}
+    - targetCorrespondingSourceObject: {fileID: 1042258294081038891, guid: 34b6ac66c1222a24d818c2458ae42201, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3522211651541592346}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3776578568335141207, guid: 34b6ac66c1222a24d818c2458ae42201, type: 3}
       insertIndex: -1

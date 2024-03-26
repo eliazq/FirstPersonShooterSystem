@@ -7,6 +7,7 @@ public class Weapon : MonoBehaviour, IInteractable
 {
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private Animator animator;
+    [SerializeField] private Transform handlerTransform;
     private WeaponHandling weaponHandling;
     
     // Animation triggers
@@ -41,6 +42,11 @@ public class Weapon : MonoBehaviour, IInteractable
             if (this == weaponHandling.Weapon) return true;
             return false;
         }
+    }
+
+    public Transform handlerGrip
+    {
+        get { return handlerTransform; }
     }
 
     private void Update() {
