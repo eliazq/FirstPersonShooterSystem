@@ -4,6 +4,6 @@
 
 <h2>How To Test This Project</h2>
 <h4>To test this project you need to first clone this reposityory and open in correct unity version.</h4>
-<h4>When project is open, open GameScene and run it</h4>
+<h4>When project is open, open Playground Scene and run it</h4>
 
 <h3>Movement is from Unity Starter Asset</h3>
