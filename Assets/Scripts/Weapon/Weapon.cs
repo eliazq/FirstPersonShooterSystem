@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour, IInteractable
     }
 
     private void Update() {
-        if (weaponHandling == null) return;
+        if (weaponHandling == null || !IsPlayerWeapon) return;
 
         if (isReloading && !animator.GetCurrentAnimatorStateInfo(0).IsTag("Reload")){
             // Just stopped reload animation
@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour, IInteractable
             isReloading = false;
         }
 
-        if (IsPlayerWeapon && !isReloading){
+        if (!isReloading){
             if (magSize <= 0)
                 animator.SetBool(OutOfAmmoBool, true);
             else animator.SetBool(OutOfAmmoBool, false);

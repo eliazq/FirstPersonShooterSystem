@@ -1721,7 +1721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7049635777751195015, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: SprintSpeed
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8949452056226500398, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: containerGameObject
