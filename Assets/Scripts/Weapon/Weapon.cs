@@ -8,6 +8,8 @@ public class Weapon : MonoBehaviour, IInteractable
     [SerializeField] private Transform shootingPoint;
     [SerializeField] private Animator animator;
     [SerializeField] private Transform handlerTransform;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip shootingClip;
     private WeaponHandling weaponHandling;
     
     // Animation triggers
@@ -79,6 +81,8 @@ public class Weapon : MonoBehaviour, IInteractable
     private void OnPlayerShoot_Action(object sender, EventArgs e){
         if (IsPlayerWeapon)
         {
+            audioSource.clip = shootingClip;
+            audioSource.PlayOneShot(shootingClip);
             animator.SetTrigger(shootTrigger);
             magSize -= 1;
         }
