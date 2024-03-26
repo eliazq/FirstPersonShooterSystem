@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour, IInteractable
     const string shootTrigger = "Shoot";
     const string ReloadTrigger = "Reload";
     const string OutOfAmmoBool = "OutOfAmmo";
+    const string AimBool = "Aim";
     public int magSize{ get; private set; }
 
     public bool isReloading {get; private set;}
@@ -62,6 +63,15 @@ public class Weapon : MonoBehaviour, IInteractable
             if (magSize <= 0)
                 animator.SetBool(OutOfAmmoBool, true);
             else animator.SetBool(OutOfAmmoBool, false);
+        }
+
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            animator.SetBool(AimBool, true);
+        }
+        else
+        {
+            animator.SetBool(AimBool, false);
         }
         
     }

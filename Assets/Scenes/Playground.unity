@@ -646,6 +646,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5743666995166842235, guid: 7e5969c250a4aae4e9b81a12e6534e70, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5891150806412242897, guid: 7e5969c250a4aae4e9b81a12e6534e70, type: 3}
       propertyPath: m_Name
       value: Canvases
@@ -1314,6 +1318,14 @@ PrefabInstance:
     - target: {fileID: 3036116069649464763, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049635777751195015, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
+      propertyPath: MoveSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049635777751195015, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
+      propertyPath: SprintSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8949452056226500398, guid: 29e7b922de7a1d6449736ad8173ab309, type: 3}
       propertyPath: containerGameObject

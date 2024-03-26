@@ -269,6 +269,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MP7-Visual
       objectReference: {fileID: 0}
+    - target: {fileID: 8424446684463934160, guid: 34b6ac66c1222a24d818c2458ae42201, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cba911f26714ad24e97d9bb5561decff, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
